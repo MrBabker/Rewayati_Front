@@ -6,9 +6,9 @@ import { Dropdown, Button } from "flowbite-react";
 const NaveBar = () => {
   return (
     <div>
-      <div className=" w-screen bg-[#333] p-5 flex flex-col">
+      <div className=" w-screen bg-[#333] p-5 flex flex-col ">
         <Dropdown
-          className="w-[250px]"
+          className="w-[250px] "
           inline={false}
           label={
             <span className="text-[#fff] hover:text-[#0095ff]">SERVICES</span>
