@@ -6,12 +6,12 @@ import { users } from "@/utils";
 export const HomePage = () => {
   return (
     <div className=" w-full bg-amber-100 overflow-hidden">
-      <div className="bg-[#333] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      <div className="bg-[#3330] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         {" "}
         {users.map((user, index) => (
           <div
             key={index}
-            className="h-[150px]  p-2  mt-5 bg-[#e4fffa] border-2 border-[#333] shadow-xl"
+            className="h-[150px]  p-2  mt-5 bg-[#ededed] border-2 border-[#333] shadow-xl"
           >
             <div className=" h-full overflow-hidden bg-[#fff] ">
               <div className=" text-[#333] text-xl font-bold">

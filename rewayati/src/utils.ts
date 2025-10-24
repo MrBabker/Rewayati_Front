@@ -175,3 +175,6 @@ The shop was empty, and Mr. Elric was gone.
 Only one clock remained, softly ticking — its hands forever frozen between “Love” and “End.”`,
     },
 ];
+
+
+

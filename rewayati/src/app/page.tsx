@@ -5,9 +5,10 @@ import Image from "next/image";
 export default function Home() {
   return (
    <div>
-    <NaveBar/>
-    <h1 className=" p-5 text-2xl font-bold text-[#bd4200]  " >All Rewayat</h1>
+  
+    <h1 className=" p-5 text-2xl font-bold text-[#bd4200] pt-22 " >All Rewayat</h1>
     <HomePage/>
+      <NaveBar/>
    </div>
   );
 }

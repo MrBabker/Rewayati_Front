@@ -1,8 +1,11 @@
-import React from 'react'
+import CreatePage from "@/components/create/CreatePage"
 
 const page = () => {
+
   return (
-    <div>page</div>
+    <div>
+      <CreatePage/>
+    </div>
   )
 }
 

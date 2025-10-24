@@ -1,10 +1,14 @@
 @import "tailwindcss";
 
 
-.flowbite-dropdown-toggle {
-  color: #333; /* اللون الافتراضي */
-}
 
-.flowbite-dropdown-toggle:hover {
-  color: blue; /* اللون عند Hover */
+/*[data-testid="flowbite-dropdown"], .dropdown-menu {
+  z-index: 9999 !important;
+  position: relative !important;
+}*/
+
+
+.storyWidth{
+  width:95vw;
+ 
 }
