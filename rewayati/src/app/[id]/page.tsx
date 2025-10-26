@@ -1,5 +1,7 @@
-import { users } from "@/utils";
+import StoryPage from "@/components/storyPage/StoryPage";
+import { HOST, Story, users } from "@/utils";
 import Link from "next/link";
+import { useState } from "react";
 
 interface PageProps {
   params: {
@@ -8,19 +10,14 @@ interface PageProps {
 }
 
 export default async function Page({ params }: PageProps) {
-  const { id } = await params;
+  const { id } = await  params;
 
   if (!id) return console.log("not found");
 
-  const user = users[parseInt(id)];
-
-  console.log("index:", id, "user:", user);
-
-  if (!user) return <div>User not found</div>;
-
   return (
     <div>
-      <div className=" p-5">
+      <StoryPage id={id} />
+      {/* <div className=" p-5">
         <div>
           This farytail writen by{" "}
           <span
@@ -51,7 +48,7 @@ export default async function Page({ params }: PageProps) {
             BACK
           </Link>
         </div>
-      </div>
+      </div>*/}
     </div>
   );
 }

@@ -1,3 +1,21 @@
+
+export const HOST = 'http://localhost:5000'
+
+export interface Story {
+    id: number;
+    creator: string;
+    title: string;
+    description: string;
+
+    subtitles: string[];
+
+    subjects: string[];
+
+    createdAt: Date;
+
+}
+
+
 export const users = [
     {
         id: 0,
