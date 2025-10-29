@@ -2,8 +2,11 @@
 import Link from "next/link";
 import React from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Logs, useAppContext } from "../Context";
+import { User } from "@/utils";
 
-const NaveBar = () => {
+const NaveBar = ({ id, username , email} : User) => {
+  const { login }: Logs = useAppContext();
   return (
     <div className=" fixed top-0 z-9999 shadow-xl">
       <div className=" w-screen bg-[#333] p-5 py-2 flex flex-row justify-between">
@@ -42,12 +45,19 @@ const NaveBar = () => {
         </div>
 
         <div className=" flex items-center gap-3">
-          <div className=" px-3 py-1 text-white   bg-gray-600 hover:bg-gray-700 transition ">
-            <Link href={`/login`}>Login</Link>
-          </div>
-           <div className=" px-3 py-1 text-white   bg-gray-600 hover:bg-gray-700 transition ">
-            <Link href={``}>Logout</Link>
-          </div>
+          {!username && (
+            <div className=" px-3 py-1 text-white   bg-gray-600 hover:bg-gray-700 transition ">
+              <Link href={`/login`}>Login</Link>
+            </div>
+          )}
+          {username && (
+            <div className=" flex flex-row">
+              <div className=" text-white font-bold mr-3">Welcome {' '+username} </div>
+              <div className=" px-3 py-1 text-white   bg-gray-600 hover:bg-gray-700 transition ">
+                <Link href={``}>Logout</Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

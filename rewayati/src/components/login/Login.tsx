@@ -1,18 +1,47 @@
 "use client";
 
+import { HOST, User } from "@/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { Logs, useAppContext } from "../Context";
+
+
 
 const Login = () => {
+  const { setLogin , setUser ,user }:Logs = useAppContext() 
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Login with:", { email, password });
-    router.push(`/`);
+
+    try {
+      const res = await fetch(`${HOST}/users/log`,{
+        method:'POST',
+        headers:{"Content-Type": "application/json",},
+        credentials:'include',
+        body:JSON.stringify({
+          email:email,
+          password:password
+        })
+      })
+
+      if(res.ok){
+
+        const data = await res.json()
+         setLogin(true);
+         setUser(data.payload);
+         console.log(user.username)
+         router.push(`/`);
+      }
+    } catch (error) {
+      
+    }
+
+   
     // هنا بعدين تقدر تربطها بالباك إند أو PlayFab
   };
 

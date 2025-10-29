@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import NaveBar from "../home/NaveBar";
+import { useRouter } from "next/navigation";
+import { HOST } from "@/utils";
 
 interface Story {
   id: number;
@@ -9,14 +11,27 @@ interface Story {
   subtitle: string;
   subject: string;
 }
+interface Subjects {
+  subject: string;
+}
 
+interface SubTitles {
+  subtitle: string;
+}
 const CreatePage = () => {
+
+  const router = useRouter()
+
   const [story, setStory] = useState<Story[]>([]);
+  const [subjects, setSubjects] = useState<Subjects[]>([]);
+  const [subTitles, setSubTitles] = useState<SubTitles[]>([]);
 
   const [bigtitle, setBigtitle] = useState<string>();
+  const [des, setDes] = useState<string>();
   const [subtitle, setSubtitle] = useState<string>();
   const [subject, setSubject] = useState<string>();
 
+  const [titlesnum, setTitlesNum] = useState<string>("1");
   const AddStory = (e: React.FormEvent) => {
     e.preventDefault();
     const theStory: Story = {
@@ -25,19 +40,67 @@ const CreatePage = () => {
       subject: subject ?? "",
       subtitle: subtitle ?? "",
     };
-
+    const theSubject: Subjects = {
+      subject: subject ?? "",
+    };
+    const theSubTitle: SubTitles = {
+      subtitle: subtitle ?? "",
+    };
     setStory((prev) => [...prev, theStory]);
+    setSubjects((prev) => [...prev, theSubject]);
+    setSubTitles((prev) => [...prev, theSubTitle]);
+
+    setTitlesNum((parseInt(titlesnum) + 1).toString());
   };
+
+  const RemoveStory = (index: number, e: React.FormEvent) => {
+    e.preventDefault();
+
+    const st = [...story];
+    st.splice(index, 1);
+
+    setStory(st);
+     setTitlesNum((parseInt(titlesnum) - 1).toString());
+  };
+
   const AddStoryTitle = (e: React.FormEvent) => {
     e.preventDefault();
-   
+  };
+
+  const CreateTheStory = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(`${HOST}/stories/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          creator: "some one",
+          title: bigtitle,
+          description: des,
+          subtitles: subTitles,
+          subjects: subjects,
+        }),
+      });
+
+      if(res.ok){
+
+        router.push(`/created`);
+      }
+
+    } catch (error) {}
   };
   return (
     <div>
-      <NaveBar />{" "}
       <div className=" bg-[#f8f8f8] mt-12 h-[98%] p-5 overflow-y-auto ">
         <div className="w-full h-full justify-center justify-items-center align-middle">
-          <div className=" text-2xl font-bold text-justify justify-center mb-5">{bigtitle}</div>
+          <div className=" text-2xl font-bold text-justify justify-center mb-3">
+            {bigtitle}
+          </div>
+          <div className="  text-justify justify-center mb-5">{des}</div>
           <div>
             {story.map((story, index) => {
               return (
@@ -50,6 +113,15 @@ const CreatePage = () => {
                       </div>
                       <div className=" text-white ">
                         {story.subject.toWellFormed()}
+                      </div>
+                      <div className=" w-full flex flex-row justify-items-end justify-end">
+                        <button
+                          onClick={(e) => RemoveStory(index, e)}
+                          style={{ fontSize: 9 }}
+                          className=" mt-7 my-2 bg-[#c80000]  hover:bg-[#626262] transition py-1 px-2  text-white font-semibold"
+                        >
+                          DELETE X
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -66,12 +138,15 @@ const CreatePage = () => {
                 onChange={(e) => setBigtitle(e.target.value)}
                 type="text"
               />
-
-             
+              <div className=" font-bold py-3  text-[#333]">Description</div>
+              <textarea
+                className=" border-2 border-[#969696] w-full py-1 px-2 rounded-sm mb-7"
+                onChange={(e) => setDes(e.target.value)}
+              />
             </form>
             <form onSubmit={AddStory}>
               <div className=" font-bold py-3 text-xl text-[#333]">
-                SubTitle
+                SubTitle {" " + `[ ${titlesnum} ]`}
               </div>
               <input
                 className=" border-2 border-[#969696] w-full py-1 px-2 rounded-sm"
@@ -90,7 +165,7 @@ const CreatePage = () => {
                   Add new subject +
                 </button>
               </div>
-              <button className=" mt-7 my-2 bg-[#333] hover:bg-[#626262] transition py-2 px-3 text-white font-semibold">
+              <button onClick={CreateTheStory} className=" mt-7 my-2 bg-[#e97400] hover:bg-[#626262] transition py-2 px-3 text-white font-semibold">
                 Create the Story
               </button>
             </form>

@@ -66,10 +66,10 @@ const StoryPage = ({ id }) => {
                         : " text-white text-2xl font-bold mt-5 mb-2"
                     }
                   >
-                    {story?.subtitles[index]}
+                    {story?.subtitles[index].subtitle}
                   </div>
                   <div className=" text-white">
-                    {subject}
+                    {story?.subjects[index].subject}
                   </div>
                 </div>
               </div>

@@ -2,8 +2,11 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { HOST, Story, users } from "@/utils";
+import { Logs, useAppContext } from "../Context";
 
 export const HomePage = () => {
+
+  
   const [stories, setStories] = useState<Story[]>([]);
 
   const GetAllStories = async () => {
