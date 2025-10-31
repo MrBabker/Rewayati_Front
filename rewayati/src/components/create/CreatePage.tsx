@@ -3,7 +3,8 @@ import Link from "next/link";
 import React, { FormEvent, useState } from "react";
 import NaveBar from "../home/NaveBar";
 import { useRouter } from "next/navigation";
-import { HOST } from "@/utils";
+import { HOST, User } from "@/utils";
+
 
 interface Story {
   id: number;
@@ -18,9 +19,8 @@ interface Subjects {
 interface SubTitles {
   subtitle: string;
 }
-const CreatePage = () => {
-
-  const router = useRouter()
+const CreatePage = ({ username, logged }: User) => {
+  const router = useRouter();
 
   const [story, setStory] = useState<Story[]>([]);
   const [subjects, setSubjects] = useState<Subjects[]>([]);
@@ -53,6 +53,10 @@ const CreatePage = () => {
     setTitlesNum((parseInt(titlesnum) + 1).toString());
   };
 
+  const GoToLogin = () => {
+    router.push("/login");
+  };
+
   const RemoveStory = (index: number, e: React.FormEvent) => {
     e.preventDefault();
 
@@ -60,7 +64,7 @@ const CreatePage = () => {
     st.splice(index, 1);
 
     setStory(st);
-     setTitlesNum((parseInt(titlesnum) - 1).toString());
+    setTitlesNum((parseInt(titlesnum) - 1).toString());
   };
 
   const AddStoryTitle = (e: React.FormEvent) => {
@@ -70,6 +74,7 @@ const CreatePage = () => {
   const CreateTheStory = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log(username)
     try {
       const res = await fetch(`${HOST}/stories/create`, {
         method: "POST",
@@ -78,7 +83,7 @@ const CreatePage = () => {
         },
         credentials: "include",
         body: JSON.stringify({
-          creator: "some one",
+          creator: username,
           title: bigtitle,
           description: des,
           subtitles: subTitles,
@@ -86,11 +91,9 @@ const CreatePage = () => {
         }),
       });
 
-      if(res.ok){
-
+      if (res.ok) {
         router.push(`/created`);
       }
-
     } catch (error) {}
   };
   return (
@@ -160,14 +163,28 @@ const CreatePage = () => {
                 onChange={(e) => setSubject(e.target.value)}
               />
               <div></div>
-              <div className=" w-full flex flex-row  justify-between justify-items-end">
-                <button className=" mt-7 my-2 bg-[#333] hover:bg-[#626262] transition py-2 px-3 text-white font-semibold">
-                  Add new subject +
-                </button>
-              </div>
-              <button onClick={CreateTheStory} className=" mt-7 my-2 bg-[#e97400] hover:bg-[#626262] transition py-2 px-3 text-white font-semibold">
-                Create the Story
-              </button>
+              {logged ? (
+                <>
+                  <div className=" w-full flex flex-row  justify-between justify-items-end">
+                    <button className=" mt-7 my-2 bg-[#333] hover:bg-[#626262] transition py-2 px-3 text-white font-semibold">
+                      Add new subject +
+                    </button>
+                  </div>
+                  <button
+                    onClick={CreateTheStory}
+                    className=" mt-7 my-2 bg-[#e97400] hover:bg-[#626262] transition py-2 px-3 text-white font-semibold"
+                  >
+                    Create the Story
+                  </button>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <button onClick={GoToLogin} className=" mt-7 my-2 bg-[#333] hover:bg-[#626262] transition py-2 px-3 text-white font-semibold">
+                    login to create your story
+                  </button>
+                </>
+              )}
             </form>
           </div>
         </div>

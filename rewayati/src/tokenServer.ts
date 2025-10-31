@@ -5,10 +5,13 @@ import { User } from "./utils";
 export const getToken = async () => {
 
     const token = (await cookies()).get('jwt')?.value;
-    console.log(token);
 
+    
 
-    const decoded = (token ? jwt.verify(token,process.env.JWT_SECRET??'') : undefined) as User;
+    const decoded = (token ? jwt.verify(token,process.env.JWT_SECRET??'') : {id:'', username:'' , email:'',logged:false}) as User;
+
+    if(token)decoded.logged=true;
+
     return decoded
 
 };

@@ -3,10 +3,25 @@ import Link from "next/link";
 import React from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Logs, useAppContext } from "../Context";
-import { User } from "@/utils";
+import { HOST, User } from "@/utils";
+import { useRouter } from "next/navigation";
 
-const NaveBar = ({ id, username , email} : User) => {
+const NaveBar = ({ username , logged }: User) => {
   const { login }: Logs = useAppContext();
+  const router = useRouter();
+
+  const Logout = async () => {
+    try {
+      const res = await fetch(`${HOST}/users/out`, {
+        method:'POST',
+        credentials:'include'
+      });
+      if (res.ok) {
+        router.push("/logedout");
+      }
+    } catch (error) {}
+  };
+
   return (
     <div className=" fixed top-0 z-9999 shadow-xl">
       <div className=" w-screen bg-[#333] p-5 py-2 flex flex-row justify-between">
@@ -45,17 +60,22 @@ const NaveBar = ({ id, username , email} : User) => {
         </div>
 
         <div className=" flex items-center gap-3">
-          {!username && (
-            <div className=" px-3 py-1 text-white   bg-gray-600 hover:bg-gray-700 transition ">
-              <Link href={`/login`}>Login</Link>
+          {!logged && (
+            <div >
+              <Link className=" px-3 py-1 text-white   bg-gray-600 hover:bg-gray-700 transition " href={`/login`}>Login</Link>
             </div>
           )}
-          {username && (
+          {logged && (
             <div className=" flex flex-row">
-              <div className=" text-white font-bold mr-3">Welcome {' '+username} </div>
-              <div className=" px-3 py-1 text-white   bg-gray-600 hover:bg-gray-700 transition ">
-                <Link href={``}>Logout</Link>
+              <div className=" text-white font-bold mr-3">
+                Welcome {" " + username}{" "}
               </div>
+              <button
+                onClick={Logout}
+                className=" cursor-pointer px-3 py-1 text-white   bg-gray-600 hover:bg-gray-700 transition "
+              >
+                Logout
+              </button>
             </div>
           )}
         </div>
