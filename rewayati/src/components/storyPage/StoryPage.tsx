@@ -3,7 +3,12 @@ import { HOST, Story } from "@/utils";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const StoryPage = ({ id }) => {
+
+interface Indexs{
+  id:number
+}
+
+const StoryPage = ({ id }:Indexs) => {
   const [story, setStory] = useState<Story>();
 
   const GetStory = async () => {

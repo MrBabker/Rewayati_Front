@@ -5,11 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Logs, useAppContext } from "../Context";
-
-
+import  goHomepage from '@/app/goHomepage.module.css'
 
 const Login = () => {
-  const { setLogin , setUser ,user }:Logs = useAppContext() 
+  const { setLogin, setUser, user }: Logs = useAppContext();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,36 +18,42 @@ const Login = () => {
     console.log("Login with:", { email, password });
 
     try {
-      const res = await fetch(`${HOST}/users/log`,{
-        method:'POST',
-        headers:{"Content-Type": "application/json",},
-        credentials:'include',
-        body:JSON.stringify({
-          email:email,
-          password:password
-        })
-      })
+      const res = await fetch(`${HOST}/users/log`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
 
-      if(res.ok){
-
-        const data = await res.json()
-         setLogin(true);
-         setUser(data.payload);
-         console.log(user.username)
-         router.push(`/`);
+      if (res.ok) {
+        const data = await res.json();
+        setLogin(true);
+        setUser(data.payload);
+        console.log(user.username);
+        router.push(`/`);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
 
-   
     // هنا بعدين تقدر تربطها بالباك إند أو PlayFab
   };
+
+
+  const GoHome =()=>{
+    router.push('/')
+  }
 
   return (
     <div>
       <div className="flex justify-between items-center h-screen bg-[#535353]">
-        <div className=" w-120 bg-[#333] h-full"></div>
+        
+        <div className="w-120 h-screen bg-[#333] flex justify-center items-center">
+          <div>
+            <button onClick={GoHome} className={goHomepage.synthwavelaserbutton}>Go home page</button>
+          </div>
+        </div>
         <div className="bg-white shadow-lg border-2 border-white p-8 w-[90%] max-w-md mr-70">
           <h1 className="text-2xl font-bold text-center text-[#333] mb-6">
             Login

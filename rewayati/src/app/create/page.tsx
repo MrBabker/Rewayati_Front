@@ -7,8 +7,8 @@ const page = async () => {
     const user = getToken();
   return (
     <div>
-      <NaveBar id={(await user).id} username={(await user).username} email={(await user).email} logged={(await user).logged}/>
-      <CreatePage id={(await user).id} username={(await user).username} email={(await user).email} logged={(await user).logged}/>
+      <NaveBar id={(await user).id} username={(await user).username} email={(await user).email} logged={(await user).logged} image={(await user).image}/>
+      <CreatePage id={(await user).id} username={(await user).username} email={(await user).email} logged={(await user).logged} image={(await user).image}/>
     </div>
   )
 }

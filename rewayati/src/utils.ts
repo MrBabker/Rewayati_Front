@@ -28,6 +28,7 @@ export interface User {
     username:string;
     email:string;
     logged:boolean;
+    image:string;
 }
 
 

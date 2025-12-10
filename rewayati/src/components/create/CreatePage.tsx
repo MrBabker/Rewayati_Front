@@ -4,7 +4,9 @@ import React, { FormEvent, useState } from "react";
 import NaveBar from "../home/NaveBar";
 import { useRouter } from "next/navigation";
 import { HOST, User } from "@/utils";
-
+import { useSelector, useDispatch } from 'react-redux'
+import { setBigtitle, setDes , setSubject ,setSubtitle ,setTitlesNum } from '@/featuers/createStory/createStorySlice'
+import { RootState } from "@/app/store";
 
 interface Story {
   id: number;
@@ -21,36 +23,33 @@ interface SubTitles {
 }
 const CreatePage = ({ username, logged }: User) => {
   const router = useRouter();
+   const storyS = useSelector((state: RootState) => state.storyReducer)
+  const dispatch = useDispatch()
 
   const [story, setStory] = useState<Story[]>([]);
   const [subjects, setSubjects] = useState<Subjects[]>([]);
   const [subTitles, setSubTitles] = useState<SubTitles[]>([]);
 
-  const [bigtitle, setBigtitle] = useState<string>();
-  const [des, setDes] = useState<string>();
-  const [subtitle, setSubtitle] = useState<string>();
-  const [subject, setSubject] = useState<string>();
-
-  const [titlesnum, setTitlesNum] = useState<string>("1");
+ 
   const AddStory = (e: React.FormEvent) => {
     e.preventDefault();
     const theStory: Story = {
       id: story.length + 1,
-      bigtitle: bigtitle ?? "",
-      subject: subject ?? "",
-      subtitle: subtitle ?? "",
+      bigtitle: storyS.bigtitle ?? "",
+      subject: storyS.subject ?? "",
+      subtitle: storyS.subtitle ?? "",
     };
     const theSubject: Subjects = {
-      subject: subject ?? "",
+      subject: storyS.subject ?? "",
     };
     const theSubTitle: SubTitles = {
-      subtitle: subtitle ?? "",
+      subtitle: storyS.subtitle ?? "",
     };
     setStory((prev) => [...prev, theStory]);
     setSubjects((prev) => [...prev, theSubject]);
     setSubTitles((prev) => [...prev, theSubTitle]);
 
-    setTitlesNum((parseInt(titlesnum) + 1).toString());
+    setTitlesNum((parseInt(storyS.titlesnum) + 1).toString());
   };
 
   const GoToLogin = () => {
@@ -64,7 +63,7 @@ const CreatePage = ({ username, logged }: User) => {
     st.splice(index, 1);
 
     setStory(st);
-    setTitlesNum((parseInt(titlesnum) - 1).toString());
+    setTitlesNum((parseInt(storyS.titlesnum) - 1).toString());
   };
 
   const AddStoryTitle = (e: React.FormEvent) => {
@@ -84,8 +83,8 @@ const CreatePage = ({ username, logged }: User) => {
         credentials: "include",
         body: JSON.stringify({
           creator: username,
-          title: bigtitle,
-          description: des,
+          title: storyS.bigtitle,
+          description: storyS.des,
           subtitles: subTitles,
           subjects: subjects,
         }),
@@ -101,9 +100,9 @@ const CreatePage = ({ username, logged }: User) => {
       <div className=" bg-[#f8f8f8] mt-12 h-[98%] p-5 overflow-y-auto ">
         <div className="w-full h-full justify-center justify-items-center align-middle">
           <div className=" text-2xl font-bold text-justify justify-center mb-3">
-            {bigtitle}
+            {storyS.bigtitle}
           </div>
-          <div className="  text-justify justify-center mb-5">{des}</div>
+          <div className="  text-justify justify-center mb-5">{storyS.des}</div>
           <div>
             {story.map((story, index) => {
               return (
@@ -138,29 +137,29 @@ const CreatePage = ({ username, logged }: User) => {
               <div className=" font-bold py-3 text-xl text-[#333]">Title</div>
               <input
                 className=" border-2 border-[#969696] w-full py-1 px-2 rounded-sm"
-                onChange={(e) => setBigtitle(e.target.value)}
+                onChange={(e) =>dispatch( setBigtitle(e.target.value))}
                 type="text"
               />
               <div className=" font-bold py-3  text-[#333]">Description</div>
               <textarea
                 className=" border-2 border-[#969696] w-full py-1 px-2 rounded-sm mb-7"
-                onChange={(e) => setDes(e.target.value)}
+                onChange={(e) => dispatch(setDes(e.target.value))}
               />
             </form>
             <form onSubmit={AddStory}>
               <div className=" font-bold py-3 text-xl text-[#333]">
-                SubTitle {" " + `[ ${titlesnum} ]`}
+                SubTitle {" " + `[ ${storyS.titlesnum} ]`}
               </div>
               <input
                 className=" border-2 border-[#969696] w-full py-1 px-2 rounded-sm"
-                onChange={(e) => setSubtitle(e.target.value)}
+                onChange={(e) => dispatch(setSubtitle(e.target.value))}
                 type="text"
               />
 
               <div className=" font-semibold py-3 text-[#333]">Subject</div>
               <textarea
                 className=" border-2  border-[#969696] w-full h-80 py-1 px-2"
-                onChange={(e) => setSubject(e.target.value)}
+                onChange={(e) => dispatch(setSubject(e.target.value))}
               />
               <div></div>
               {logged ? (
