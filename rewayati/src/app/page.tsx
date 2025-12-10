@@ -13,7 +13,7 @@ export default async function Home() {
     <div>
       <div className=" w-screen flex flex-row justify-between">
         <h1 className=" p-5 text-2xl font-bold text-[#bd4200] pt-22 ">
-          All Rewayat
+          All Rewayat s
         </h1>
         <Profile
           id={(await user).id}
